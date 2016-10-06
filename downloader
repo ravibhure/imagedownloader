@@ -1,0 +1,66 @@
+#!/bin/bash
+
+url="myurl"
+
+case "$1" in
+   -h|--help)
+        help=$2   
+        ;;   
+   -V|--version)	
+		version=$2
+		;;
+   -d|--dir)	
+		dir=$2
+		;;
+   -r|--resolution)	
+		resolution=$2
+		;;		
+   -i|--imagename)	
+		imagename=$2
+		;;	
+   -v|--verbose)	
+		versbose=$2
+		;;	
+	*)
+		echo "Usage: $0"
+		exit 1
+		;;			
+ esac
+
+help(){
+"echo Usage: $0 help";
+exit 0
+}   
+
+if [ ! -z $verbose ] ; then
+  set -x
+fi
+
+if [ ! -z $version ]  ; then
+   echo "$0 0.0.1"
+   exit 0
+fi
+
+
+if [ $dir ] ;then
+  dir=$dir
+else
+  dir=/tmp
+fi  
+  
+if [ $imagename ] ; then
+  imagename=$imagename
+else
+  imagename=image
+fi
+
+curl -s "$url" -O $dir/$imagename 
+
+if [ $resolution ] ;then
+   convert -size $resolution $dir/$imagename $dir/newfile
+   echo "your image is at $dir/newfile"
+else
+   echo "your image is at $dir/$imagename"
+   exit 0
+fi   
+   
